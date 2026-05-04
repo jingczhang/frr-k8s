@@ -269,6 +269,10 @@ func neighborsAreCompatible(n1, n2 *frr.NeighborConfig) error {
 		return fmt.Errorf("conflicting advertiseDualStack specified for %s", neighborKey)
 	}
 
+	if n1.AsPathPrepend != n2.AsPathPrepend {
+		return fmt.Errorf("conflicting asPathPrepend (%d != %d) specified for %s", n1.AsPathPrepend, n2.AsPathPrepend, neighborKey)
+	}
+
 	if !ptrsEqual(n1.HoldTime, n2.HoldTime, defaultHoldTime) {
 		return fmt.Errorf("multiple hold times specified for %s", neighborKey)
 	}

@@ -9,6 +9,9 @@
 route-map {{$.neighbor.ID}}-out permit {{counter $.neighbor.ID}}
   match {{$prefixList.IPFamily}} address prefix-list {{$prefixList.PrefixListName }}
   {{$prefixList.SetStatement}}
+{{- if gt $.neighbor.AsPathPrepend 0 }}
+  set as-path prepend {{asPathPrependStatement $.router.MyASN $.neighbor.AsPathPrepend}}
+{{- end }}
   on-match next
 {{ end -}}
 
@@ -32,9 +35,15 @@ ipv6 prefix-list {{$prefixListName}} seq {{counter $prefixListName}} permit {{$a
 
 route-map {{$.neighbor.ID}}-out permit {{counter $.neighbor.ID}}
   match ip address prefix-list {{.neighbor.ToAdvertisePrefixListV4}}
+{{- if gt $.neighbor.AsPathPrepend 0 }}
+  set as-path prepend {{asPathPrependStatement $.router.MyASN $.neighbor.AsPathPrepend}}
+{{- end }}
 
 route-map {{$.neighbor.ID}}-out permit {{counter $.neighbor.ID}}
   match ipv6 address prefix-list {{.neighbor.ToAdvertisePrefixListV6}}
+{{- if gt $.neighbor.AsPathPrepend 0 }}
+  set as-path prepend {{asPathPrependStatement $.router.MyASN $.neighbor.AsPathPrepend}}
+{{- end }}
 
 {{/* filtering incoming prefixes */}}
 {{$plistName:=allowedIncomingList $.neighbor}}

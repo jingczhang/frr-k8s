@@ -195,6 +195,7 @@ func neighborToFRR(n v1beta1.Neighbor, prefixesInRouter []string, alwaysBlock []
 		GracefulRestart: n.EnableGracefulRestart,
 		VRFName:         routerVRF,
 		AlwaysBlock:     alwaysBlock,
+		AsPathPrepend:   n.AsPathPrepend,
 	}
 
 	res.HoldTime, res.KeepaliveTime, err = parseTimers(n.HoldTime, n.KeepaliveTime)
